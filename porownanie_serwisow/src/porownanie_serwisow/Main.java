@@ -18,9 +18,11 @@ public class Main {
         // TODO code application logic here
         //bobobobobobobo
         System.err.println("dududu");
-        Goodbye gb = new Goodbye();
+        Goodbye gb = new Goodbye("fackup");
+        gb= new Goodbye();
+        
         Hello he = new Hello();
-        Goodbye gb1 = new Goodbye("fuckup");
+        
         
     }
     
