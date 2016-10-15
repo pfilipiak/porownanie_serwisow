@@ -18,6 +18,7 @@ public class Main {
         // TODO code application logic here
         //bobobobobobobo
         System.err.println("dududu");
+        Goodbye gb = new Goodbye();
         
     }
     
