@@ -15,6 +15,10 @@ public class Goodbye {
         System.err.println("konstruktor ststtststs");
         
     }
+
+    Goodbye(String fuckup) {
+        System.err.println(fuckup);
+    }
     
     
     

@@ -19,6 +19,8 @@ public class Main {
         //bobobobobobobo
         System.err.println("dududu");
         Goodbye gb = new Goodbye();
+        Hello he = new Hello();
+        Goodbye gb1 = new Goodbye("fuckup");
         
     }
     
