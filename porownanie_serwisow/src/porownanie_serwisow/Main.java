@@ -27,7 +27,7 @@ public class Main {
         APIResponse test = sm.runQuery();
         System.out.println(test.getAPIKey());
         System.out.println(test.getHTTPResCode());
-        System.out.println(test.getContent());
+        System.out.println(test.getContent()); 
     }
 
     public Main() {
