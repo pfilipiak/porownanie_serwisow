@@ -1,15 +1,19 @@
 Info główne typy
-   private String domain;
-   private String keyword;
-   private String landingPage;
+   private text domain; 'www.ceneo.pl'
+   private text keyword;
+   private text landingPage;
    private Byte position; //1-20
-   private Integer totalTraffic;
-   private Integer volumen;
-   private Float trafficShare; //procent, ddd.ff
-   private Long timeStamp; 
+   private bigint totalTraffic;
+   private bigint volumen;
+   private numeric(15,4) trafficShare; //procent, ddd.ff dzielic na 100.00
+   private bigint timeStamp; 
 
 Baza
 Prefixy
 d_ - słownik
 f_ - funkcja
+
+bo_ - dane dotyczace operatorow i grup
+import - dane importowe
+bp_ -dane dotyczace 
 
