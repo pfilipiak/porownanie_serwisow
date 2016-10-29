@@ -63,7 +63,9 @@ public class SemrushAPIConnector {
                         i++;
                         if (!readStr.isEmpty()) {
                             content += readStr + "\r\n";
-                            String cc[] = readStr.split("[;]+");
+                            readStr = readStr.replace("\";\"", "#");
+                            readStr = readStr.replace("\"", "").trim();
+                            String cc[] = readStr.split("[#]+");
                             if (cc.length>2 && i>1){
                                 APIDataEntity apiDE = new APIDataEntity();
                                 apiDE.setKeyword(cc[0].replace("\"", "")); //poprawic, malo eleg

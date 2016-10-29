@@ -38,11 +38,11 @@ public class APIDataEntity {
     public String EntityToString() {
         return 
             "[" + 
-            this.keyword + "," +
-            this.landingPage + "," +
-            Byte.toString(this.position) + "," + 
-            Integer.toString(this.volumen) + "," +
-            Float.toString(this.trafficShare) + "," +
+            this.keyword + ", " +
+            this.landingPage + ", " +
+            Byte.toString(this.position) + ", " + 
+            Integer.toString(this.volumen) + ", " +
+            Float.toString(this.trafficShare) + ", " +
             Long.toString(this.timestamp) + "]";
             
     }
