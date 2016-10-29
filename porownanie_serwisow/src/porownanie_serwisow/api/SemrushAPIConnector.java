@@ -54,6 +54,59 @@ public class SemrushAPIConnector {
             HttpURLConnection http = (HttpURLConnection)semRushUrl.openConnection();
             statusCode = http.getResponseCode();
             respApi.setApiCode(statusCode);
+            Integer i = 0;
+            if (statusCode == 200) {
+                try {
+                    BufferedReader input = new BufferedReader(new InputStreamReader(semRushUrl.openStream()));
+                    String readStr;
+                    while ((readStr = input.readLine()) != null) {
+                        i++;
+                        if (!readStr.isEmpty()) {
+                            content += readStr + "\r\n";
+                            String cc[] = readStr.split("[;]+");
+                            if (cc.length>2 && i>1){
+                                APIDataEntity apiDE = new APIDataEntity();
+                                apiDE.setKeyword(cc[0].replace("\"", "")); //poprawic, malo eleg
+                                apiDE.setLandingPage(cc[1].replace("\"", ""));
+                                //System.out.println("cc:"+cc[2].replace("\"", "").trim());
+                                apiDE.setPosition(cc[2].replace("\"", "").trim());
+                                apiDE.setVolumen(Integer.parseInt(cc[3].replace("\"", "").trim()));
+                                apiDE.setTrafficShare(Float.parseFloat(cc[4].replace("\"", "").trim()));
+                                apiDE.setTimestamp(Long.parseLong(cc[5].replace("\"", "").trim()));
+                                respApi.setAPIDataEntity(apiDE);
+                             }
+                        }
+                    }
+                    System.out.println(content);
+                    input.close();
+                    
+                } catch (IOException ex) {
+                    System.err.println("Błąd w trakcie połączenia: " + ex);
+                }
+
+            } else 
+                System.err.println("Błąd zapytania");
+        
+        } catch (IOException e){
+            System.err.println("Błąd połączenia: " + e);
+        }
+
+         return respApi;
+    }
+ //
+    
+     public APIData fetchData(){
+        
+        APIData respApi = new APIData();
+        respApi.setApiKey(this.apiKey);
+        String content = "";
+            
+        try {
+            int statusCode;
+            URL semRushUrl = new URL(apiPath);
+            HttpURLConnection http = (HttpURLConnection)semRushUrl.openConnection();
+            statusCode = http.getResponseCode();
+            respApi.setApiCode(statusCode);
 
             if (statusCode == 200) {
                 try {
@@ -91,6 +144,5 @@ public class SemrushAPIConnector {
 
          return respApi;
     }
-    
     
 }
