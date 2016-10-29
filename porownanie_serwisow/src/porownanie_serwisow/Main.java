@@ -25,13 +25,14 @@ public class Main {
         //Hello he = new Hello();
         //String apiKey = "-nie-zapisywac-api-na-githubie-";
         
-        String apiKey = "----";
+        //String apiKey = "----";
+        String apiKey = "";
         SemrushAPIConnector sm = new SemrushAPIConnector(apiKey);  
         sm.buildQuery("wp.pl", "", "", "", 3);
         APIData test = sm.runQuery();
-        System.out.println(test.getAPIKey());
-        System.out.println(test.getHTTPResCode());
-        System.out.println(test.getContent()); 
+        //System.out.println(test.getAPIKey());
+        //System.out.println(test.getHTTPResCode());
+        //System.out.println(test.getContent()); 
         
         System.out.println(test.printAPIDataEntity()); 
         //int count[] = {34, 22,10,60,30,22};
