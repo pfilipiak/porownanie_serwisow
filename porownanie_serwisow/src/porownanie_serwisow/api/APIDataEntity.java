@@ -6,7 +6,7 @@
 package porownanie_serwisow.api;
 
 /**
- **
+ *
  * @author Adrian
  */
 public class APIDataEntity {

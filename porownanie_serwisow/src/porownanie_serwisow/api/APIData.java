@@ -8,7 +8,7 @@ package porownanie_serwisow.api;
 import java.util.*;
 import java.text.*;
 /**
- **
+ *
  * @author Adrian
  */
 public class APIData {
