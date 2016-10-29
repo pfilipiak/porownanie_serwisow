@@ -6,7 +6,7 @@ Info główne typy
    private bigint totalTraffic;
    private bigint volumen;
    private numeric(15,4) trafficShare; //procent, ddd.ff dzielic na 100.00
-   private bigint timeStamp; 
+   private bigint timestamp; 
 
 Baza
 Prefixy

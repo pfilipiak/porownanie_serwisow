@@ -12,9 +12,10 @@ import java.util.*;
  * @author Adrian
  */
 public class APIData {
-    private String apiKey;
-    private String content;
-    private int code;
+    
+    private String apiKey; //apikey po ktorym nastąpiło połaczenie
+    private String content; //do usuniecia
+    private int code; //kod odpowiedzi api - wszystko co ma Error Code: XX 
     private String data;
     private Map<String[], APIDataEntity> resultsMapApiED;
     
