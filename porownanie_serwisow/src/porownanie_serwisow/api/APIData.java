@@ -6,25 +6,29 @@
 package porownanie_serwisow.api;
 
 import java.util.*;
-
+import java.text.*;
 /**
  *
  * @author Adrian
  */
 public class APIData {
     
-    private String apiKey; //apikey po ktorym nastąpiło połaczenie
+    private String apiKey; //apikey po ktorym nastąpiło (skuteczne) połaczenie
     private String content; //do usuniecia
-    private int code; //kod odpowiedzi api - wszystko co ma Error Code: XX 
-    private String data;
-    private Map<String[], APIDataEntity> resultsMapApiED;
+    private int apiCode; //kod odpowiedzi api. Kod: 40x - błąd klucza api, kod 200 - działa. Możliwy tekst 'Error Code: XX' - api dziala ale brak danych dla serwisu
+    private String date; //data pobrania dla live - dany dzien YYYY-MM-DD, dla historycznych (miesiecznych) YYYY-MM
+    private Map<String[], APIDataEntity> resultsMapApiED; //mapa <keyword, landinPage> i obiekt typu APIDataEntity
+    private Boolean isLive; 
     
-    public APIData(String apiKey) {
+    public APIData() {
         this.apiKey = "";
         this.content = "";
-        code = 0;
-        this.resultsMapApiED = new HashMap<String[], APIDataEntity>();
+        this.apiCode = -1;
+        this.isLive = true;
+        this.resultsMapApiED = new HashMap<String[], APIDataEntity>();  
+        this.date = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //domyślnie ustawianmy na Live data
     }
+    
     public void setAPIKey(String apiKey){
            this.apiKey = apiKey;  
     }
@@ -35,7 +39,7 @@ public class APIData {
     }
     
     public void setHTTPResCode(int code){
-           this.code = code;  
+           this.apiCode = code;  
     }
     
     public String getContent(){
@@ -43,7 +47,7 @@ public class APIData {
     }
     
     public int getHTTPResCode(){
-           return this.code;  
+           return this.apiCode;  
     }
    
     public String getAPIKey(){

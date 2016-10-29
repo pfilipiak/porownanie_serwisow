@@ -13,13 +13,14 @@ public class APIDataEntity {
    
    private String keyword; //fraza
    private String landingPage; //strona docelowa tj strona ktora wyswietla sie na dana fraze, na danej pozycji
-   private Byte position = -1; //API zwraca tylko 1-20, my musimy obsłużć 'braki'
-   private Integer volumen = -1; //srednia liczba wyszukiwan frazy miesiecznie
+   private Byte position; //API zwraca tylko 1-20, my musimy obsłużć 'braki'
+   private Integer volumen; //srednia liczba wyszukiwan frazy miesiecznie
    private Float trafficShare; //procent, ddd.dd - przekonwertowasc na d.dddd
    private Long timestamp; //data aktualizacji wyniku - zmienia sie gdy zaszla zmiana pozycji pracy Keyword, LandingPage
 
    public APIDataEntity() {
-        
+        this.position = -1;
+        this.volumen = -1;
     }
 
     public APIDataEntity(APIDataEntity apiDE) {
