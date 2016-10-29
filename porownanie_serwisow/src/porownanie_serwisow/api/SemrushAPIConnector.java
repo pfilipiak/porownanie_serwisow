@@ -9,12 +9,12 @@ import java.io.*;
 import java.util.*;
 
 /**
- *
+ **
  * @author Adrian
  */
 
 public class SemrushAPIConnector {
-    private String apiKey="";
+    private String apiKey;
     private String apiPath = "https://www.semrush.com/"; //zmienic
     
     public SemrushAPIConnector(String apiKey) {
@@ -23,6 +23,10 @@ public class SemrushAPIConnector {
     
     public void setAPIKey(String apiKey){
         this.apiKey = apiKey;
+    }
+    
+    public String getAPIKey(){
+        return this.apiKey;
     }
         
     public void buildQuery(String website, String input_param, String filter, String output_param, int rows) {
@@ -36,19 +40,20 @@ public class SemrushAPIConnector {
                         + "&display_sort=tr_desc&database=pl";
     }
     
+    
     public APIData runQuery(){
         
-        APIData resp = new APIData(apiKey);
-        
+        APIData respApi = new APIData();
+        respApi.setApiKey(this.apiKey);
         String content = "";
-        int statusCode = 0;
+        
             
         try {
-            
+            int statusCode;
             URL semRushUrl = new URL(apiPath);
             HttpURLConnection http = (HttpURLConnection)semRushUrl.openConnection();
             statusCode = http.getResponseCode();
-            resp.setHTTPResCode(statusCode);
+            respApi.setApiCode(statusCode);
 
             if (statusCode == 200) {
                 try {
@@ -62,12 +67,16 @@ public class SemrushAPIConnector {
                                 APIDataEntity apiDE = new APIDataEntity();
                                 apiDE.setKeyword(cc[0].replace("\"", "")); //poprawic, malo eleg
                                 apiDE.setLandingPage(cc[1].replace("\"", ""));
-                                resp.setAPIDataEntity(apiDE);
+                                //apiDE.setPosition(cc[2].replace("\"", ""));
+                                //apiDE.setVolumen(Integer.parseInt(cc[3].replace("\"", "")));
+                                //apiDE.setTrafficShare(Float.parseFloat(cc[4].replace("\"", "")));
+                                //apiDE.setTimestamp(Long.parseLong(cc[5].replace("\"", "")));
+                                respApi.setAPIDataEntity(apiDE);
                              }
                         }
                     }
+                    System.out.println(content);
                     input.close();
-                    if (!content.isEmpty()) resp.setContent(content);  
                     
                 } catch (IOException ex) {
                     System.err.println("Błąd w trakcie połączenia: " + ex);
@@ -80,7 +89,7 @@ public class SemrushAPIConnector {
             System.err.println("Błąd połączenia: " + e);
         }
 
-         return resp;
+         return respApi;
     }
     
     

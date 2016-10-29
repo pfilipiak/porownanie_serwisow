@@ -6,7 +6,7 @@
 package porownanie_serwisow.api;
 
 /**
- *
+ **
  * @author Adrian
  */
 public class APIDataEntity {
@@ -20,7 +20,10 @@ public class APIDataEntity {
 
    public APIDataEntity() {
         this.position = -1;
-        this.volumen = -1;
+        this.volumen = 0;
+        this.trafficShare = 0.0f;
+        this.timestamp = 0L;
+        
     }
 
     public APIDataEntity(APIDataEntity apiDE) {
@@ -32,8 +35,20 @@ public class APIDataEntity {
         this.timestamp = apiDE.timestamp;
     }
     
+    public String EntityToString() {
+        return 
+            "[" + 
+            this.keyword + "," +
+            this.landingPage + "," +
+            Byte.toString(this.position) + "," + 
+            Integer.toString(this.volumen) + "," +
+            Float.toString(this.trafficShare) + "," +
+            Long.toString(this.timestamp) + "]";
+            
+    }
+        
     public String getKeyword() {
-        return keyword;
+        return this.keyword;
     }
 
     public void setKeyword(String keyword) {
@@ -41,7 +56,7 @@ public class APIDataEntity {
     }
 
     public String getLandingPage() {
-        return landingPage;
+        return this.landingPage;
     }
 
     public void setLandingPage(String landingPage) {
@@ -49,15 +64,19 @@ public class APIDataEntity {
     }
 
     public Byte getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Byte position) {
         this.position = position;
     }
 
+    public void setPosition(String position) {
+        this.position = Byte.parseByte(position.trim());
+    }
+        
     public Integer getVolumen() {
-        return volumen;
+        return this.volumen; 
     }
 
     public void setVolumen(Integer volumen) {
@@ -65,7 +84,7 @@ public class APIDataEntity {
     }
 
     public Float getTrafficShare() {
-        return trafficShare;
+        return this.trafficShare;
     }
 
     public void setTrafficShare(Float trafficShare) {
@@ -73,7 +92,7 @@ public class APIDataEntity {
     }
 
     public Long getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public void setTimestamp(Long timestamp) {
