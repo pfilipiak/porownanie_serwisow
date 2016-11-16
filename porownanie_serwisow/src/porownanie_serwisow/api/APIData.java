@@ -16,40 +16,88 @@ public class APIData {
     private String apiKey; //apikey po ktorym nastąpiło (skuteczne) połaczenie
     private int apiCode; //kod odpowiedzi api. Kod: 40x - błąd klucza api, kod 200 - działa. Możliwy tekst 'Error Code: XX' - api dziala ale brak danych dla serwisu
     private String date; //data pobrania dla live - dany dzien YYYY-MM-DD, dla historycznych (miesiecznych) YYYY-MM
-    private Map<String[], APIDataEntity> resultsMapApiED; //mapa <keyword, landinPage> i obiekt typu APIDataEntity
+    private Map<String[], APIWebsitePhrases> resultsMapApi; //mapa <keyword, landinPage> i obiekt typu APIWebsitePhrases
+    private Map<String[], APIWebsiteStats> resultsWebsiteStat; //mapa <serwis, data> i obiekt typu APIWebsiteStats
+    private Map<String[], APIWebsiteCompetitors> resultsWebsiteCompetitors; //mapa <konkurent, poziom konkur.> i obiekt APIWebsiteCompetitors
     private Boolean isLive; 
-    
+    private String lang;
+ 
     public APIData() {
         this.apiKey = "";
         this.apiCode = -1;
         this.isLive = true;
-        this.resultsMapApiED = new HashMap<String[], APIDataEntity>();  
-        this.date = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //domyślnie ustawianmy na Live data
+        this.resultsMapApi = new HashMap<String[], APIWebsitePhrases>();  
+        this.resultsWebsiteStat = new HashMap<String[], APIWebsiteStats>();  
+        this.resultsWebsiteCompetitors = new HashMap<String[], APIWebsiteCompetitors>();
+        this.date = new SimpleDateFormat("yyyyMM").format(new Date()); //domyślnie ustawianmy na Live data
     }
     
    
-    public void setAPIDataEntity(APIDataEntity apiDE){
-        String[] keyword_lp = new String[2];
-        keyword_lp[0] = apiDE.getKeyword();
-        keyword_lp[1] = apiDE.getLandingPage();
+    public void addAPIWebsitePhrase(APIWebsitePhrases apiDE){
+        String[] phrase_url = new String[2];
+        phrase_url[0] = apiDE.getPhrase();
+        phrase_url[1] = apiDE.getUrl();
         //if map.get("keyword_lp")..
-        this.resultsMapApiED.put(keyword_lp, new APIDataEntity(apiDE));
+        this.resultsMapApi.put(phrase_url, new APIWebsitePhrases(apiDE));
     }
     
-    public String printAPIDataEntity(){
-
-        //if map.get("keyword_lp")..
-       if (this.resultsMapApiED != null)
-        this.resultsMapApiED.entrySet().forEach((entry) -> {
-            String[] key = entry.getKey();
-            APIDataEntity value = entry.getValue();
-            System.out.print("key: "+Arrays.toString(key) + " ");
-            System.out.println("value: "+value.EntityToString());
-        });
-        
-        return "printed";
-        
+    public void addAPIWebsiteStat(String website, APIWebsiteStats apiStats){   
+        apiStats.setWebsite(website);
+        String[] domain_date = new String[2];
+        domain_date[0] = website;
+        domain_date[1] = apiStats.getDataYYYYMM();
+        this.resultsWebsiteStat.put(domain_date, apiStats);
     }
+
+    public void addAPIWebsiteCompetitor(APIWebsiteCompetitors apiWComp){
+        String[] comp_relev = new String[2];
+        comp_relev[0] = apiWComp.getCompetitor();
+        comp_relev[1] = Float.toString(apiWComp.getRelevance());
+        //if map.get("keyword_lp")..
+        this.resultsWebsiteCompetitors.put(comp_relev, apiWComp);
+    }
+
+    //wydruk wartości w mapach
+    public String printAPIWebsitePhrases(){
+        //if map.get("keyword_lp")..
+       if (this.resultsMapApi != null) {
+            this.resultsMapApi.entrySet().forEach((entry) -> {
+                String[] key = entry.getKey();
+                APIWebsitePhrases value = entry.getValue();
+                System.out.print("key: "+Arrays.toString(key) + " ");
+                System.out.println("value: "+value.EntityToString());
+            });
+       }
+       return "printed API results";
+    }
+    
+    
+     public String printAPIWebsiteStats(){
+       if (this.resultsWebsiteStat != null) {
+            this.resultsWebsiteStat.entrySet().forEach((entry) -> {
+                String[] key = entry.getKey();
+                APIWebsiteStats value = entry.getValue();
+                System.out.print("key: "+Arrays.toString(key) + " ");
+                System.out.println("value: "+ value.EntityToString());
+            });
+       }
+       return "printed stats";
+    }
+    
+      public String printAPIWebsiteCompetitors(){
+        //if map.get("keyword_lp")..
+       if (this.resultsWebsiteCompetitors != null) {
+            this.resultsWebsiteCompetitors.entrySet().forEach((entry) -> {
+                String[] key = entry.getKey();
+                APIWebsiteCompetitors value = entry.getValue();
+                System.out.print("key: "+Arrays.toString(key) + " ");
+                System.out.println("value: "+value.EntityToString());
+            });
+       }
+       return "printed competitors";
+    }
+         
+    //getters and setters
 
     public String getApiKey() {
         return this.apiKey;
@@ -78,7 +126,43 @@ public class APIData {
     public String getDate() {
         return this.date;
     }
-    
-    
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+        
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public Map<String[], APIWebsitePhrases> getResultsWebsitePhrases() {
+        return resultsMapApi;
+    }
+
+    public void setResultsWebsitePhrases(Map<String[], APIWebsitePhrases> resultsMapApi) {
+        this.resultsMapApi = resultsMapApi;
+        
+    }   
+
+    public Map<String[], APIWebsiteStats> getResultsWebsiteStats() {
+        return resultsWebsiteStat;
+    }
+
+    public void setResultsWebsiteStats(Map<String[], APIWebsiteStats> resultsWebsiteStat) {
+        this.resultsWebsiteStat = resultsWebsiteStat;
+    }
+
+    public Map<String[], APIWebsiteCompetitors> getResultsWebsiteCompetitors() {
+        return resultsWebsiteCompetitors;
+    }
+
+    public void setResultsWebsiteCompetitors(Map<String[], APIWebsiteCompetitors> resultsWebsiteCompetitors) {
+        this.resultsWebsiteCompetitors = resultsWebsiteCompetitors;
+    }
+
 
 }

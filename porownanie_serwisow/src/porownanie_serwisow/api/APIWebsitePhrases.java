@@ -9,26 +9,25 @@ package porownanie_serwisow.api;
  *
  * @author Adrian
  */
-public class APIDataEntity {
+public class APIWebsitePhrases {
    
-   private String keyword; //fraza
-   private String landingPage; //strona docelowa tj strona ktora wyswietla sie na dana fraze, na danej pozycji
+   private String phrase; //fraza
+   private String url; //strona docelowa tj strona ktora wyswietla sie na dana fraze, na danej pozycji
    private Byte position; //API zwraca tylko 1-20, my musimy obsłużć 'braki'
    private Integer volumen; //srednia liczba wyszukiwan frazy miesiecznie
    private Float trafficShare; //procent, ddd.dd - przekonwertowasc na d.dddd
    private Long timestamp; //data aktualizacji wyniku - zmienia sie gdy zaszla zmiana pozycji pracy Keyword, LandingPage
 
-   public APIDataEntity() {
+   public APIWebsitePhrases() {
         this.position = -1;
         this.volumen = 0;
         this.trafficShare = 0.0f;
         this.timestamp = 0L;
-        
     }
 
-    public APIDataEntity(APIDataEntity apiDE) {
-        this.keyword = apiDE.getKeyword();
-        this.landingPage = apiDE.getLandingPage();
+    public APIWebsitePhrases(APIWebsitePhrases apiDE) {
+        this.phrase = apiDE.getPhrase();
+        this.url = apiDE.getUrl();
         this.position = apiDE.position;
         this.volumen = apiDE.volumen;
         this.trafficShare = apiDE.trafficShare;
@@ -38,29 +37,45 @@ public class APIDataEntity {
     public String EntityToString() {
         return 
             "[" + 
-            this.keyword + ", " +
-            this.landingPage + ", " +
+            this.phrase + ", " +
+            this.url + ", " +
             Byte.toString(this.position) + ", " + 
             Integer.toString(this.volumen) + ", " +
             Float.toString(this.trafficShare) + ", " +
             Long.toString(this.timestamp) + "]";
             
     }
-        
-    public String getKeyword() {
-        return this.keyword;
+     
+    //    
+    public void setAttribute(String attr_name, String attr_value) {
+        String attr = attr_name.toLowerCase().trim();
+        switch (attr) {
+            case "phrase" : this.setPhrase(attr_value); break;
+            case "url": this.setUrl(attr_value); break;
+            case "position": this.setPosition(attr_value); break;
+            case "volumen": this.setVolumen(attr_value); break;
+            case "trafficshare": this.setTrafficShare(attr_value); break;
+            case "timestamp": this.setTimestamp(attr_value); break;
+        default: break;
+        }
+    }   
+
+    
+    //
+    public String getPhrase() {
+        return this.phrase;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setPhrase(String keyword) {
+        this.phrase = keyword;
     }
 
-    public String getLandingPage() {
-        return this.landingPage;
+    public String getUrl() {
+        return this.url;
     }
 
-    public void setLandingPage(String landingPage) {
-        this.landingPage = landingPage;
+    public void setUrl(String landingPage) {
+        this.url = landingPage;
     }
 
     public Byte getPosition() {
@@ -83,6 +98,11 @@ public class APIDataEntity {
         this.volumen = volumen;
     }
 
+    
+    public void setVolumen(String volumen) {
+        this.volumen = Integer.parseInt(volumen.trim());
+    }
+
     public Float getTrafficShare() {
         return this.trafficShare;
     }
@@ -91,12 +111,22 @@ public class APIDataEntity {
         this.trafficShare = trafficShare;
     }
 
+    public void setTrafficShare(String trafficShare) {
+        this.trafficShare = Float.parseFloat(trafficShare.trim());
+    }
+        
     public Long getTimestamp() {
         return this.timestamp;
     }
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }  
+    
+    public void setTimestamp(String timestamp) {
+        this.timestamp = Long.parseLong(timestamp.trim());
     }   
+
       
+    
 }
