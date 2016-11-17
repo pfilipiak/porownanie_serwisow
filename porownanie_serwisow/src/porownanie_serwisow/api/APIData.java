@@ -34,14 +34,22 @@ public class APIData {
     
    
     public void addAPIWebsitePhrase(APIWebsitePhrases apiDE){
+        //dane sa pobierane albo live - dany dzien albo zadany miesiac (historczne, jeden mc)
+        //analiza wskazuje ze wartosci klucza nie muszą byc unikalne - wybieramy "nowsze" z danego miesiaca
         String[] phrase_url = new String[2];
         phrase_url[0] = apiDE.getPhrase();
         phrase_url[1] = apiDE.getUrl();
-        //if map.get("keyword_lp")..
-        this.resultsMapApi.put(phrase_url, new APIWebsitePhrases(apiDE));
+        
+        APIWebsitePhrases valid;
+        valid = resultsMapApi.get(apiDE);
+        if (valid == null || (valid.getTimestamp() < apiDE.getTimestamp() ))
+            this.resultsMapApi.put(phrase_url, new APIWebsitePhrases(apiDE));
+        //jeśl nie ma takiego obiektu lub timestamp jest nowszy niz timestamp dla znalezonego [phrase, url] 
+                        
     }
     
     public void addAPIWebsiteStat(String website, APIWebsiteStats apiStats){   
+       //analiza wskazuje ze wartosci klucza zawsze sa unikalne
         apiStats.setWebsite(website);
         String[] domain_date = new String[2];
         domain_date[0] = website;
@@ -50,10 +58,10 @@ public class APIData {
     }
 
     public void addAPIWebsiteCompetitor(APIWebsiteCompetitors apiWComp){
+        //analiza wskazuje ze wartosci klucza zawsze sa unikalne
         String[] comp_relev = new String[2];
         comp_relev[0] = apiWComp.getCompetitor();
         comp_relev[1] = Float.toString(apiWComp.getRelevance());
-        //if map.get("keyword_lp")..
         this.resultsWebsiteCompetitors.put(comp_relev, apiWComp);
     }
 

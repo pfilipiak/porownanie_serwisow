@@ -224,7 +224,13 @@ public class SemrushAPIConnector {
     
     
     public boolean getDomainStatsReport(APIData api_data, String website, String lang, String YYYYMM) {
-
+        /* 
+        obecnie pobieramy albo dane live tj biezacy miesiac, 1 wynik
+        albo 12 miesiacy wstecz (do biezacego). Mozna wiecej - max 36.
+        czyli albo live albo 12 mc historycznych. 
+        Nie ma znaczenia czy czy podasz datę przed 2 mc czy 10 lat.
+        Attrybut tak zostawiam bo w razie czego mozemy uwzglednic dokladnie żądany zakres dat
+        */
         String type = "domain_rank_history"; //domyślnie raport historyczny, tzn do miesiąca poprzedzajacego biezacy
         String localDate = new SimpleDateFormat("yyyyMM").format(new Date());
         String[] raportFraz = {"hist_date", "traffic", "keywords"};

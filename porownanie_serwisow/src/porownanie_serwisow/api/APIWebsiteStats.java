@@ -87,7 +87,7 @@ public class APIWebsiteStats {
     }
 
     public void setDataYYYYMM(String dataYYYYMM) {
-        this.dataYYYYMM = dataYYYYMM;
+        this.dataYYYYMM = dataYYYYMM.substring(0, 6); //tylko YYYYMM
     }
     
     
