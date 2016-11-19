@@ -16,24 +16,14 @@ import java.text.*;
 
 public class SemrushAPIConnector {
     private String apiKey;
-    private String apiPath = "https://www.semrush.com/"; //zmienic
+    private String apiPath = "https://www.semrush.com/"; //root
+    private String apiCreditsPath = "users/countapiunits.html?key=";
     private String [] inputParams;
     private String lang = "pl";
     private String currDate;
     private String mainWebsite;
     private final Map<String, String> APIDictionary = new HashMap<String, String>();
-
-    private int dictIndexOf(String key){
-        String[] arr = this.getInputParams();
-        String value = APIDictionary.get(key.toLowerCase());
-        
-        if (arr != null && value != null) {
-            for (int i = 0; i < arr.length; i++)
-                if (value.equals(arr[i])) return i;
-        }       
-        return -1;
-    }
-      
+    
     
     public SemrushAPIConnector(String apiKey) {
         this.apiKey = apiKey;
@@ -58,7 +48,7 @@ public class SemrushAPIConnector {
     public Long TestAPIKey(){
         
         Long credits = -2L; //wartośc gdy bład przy połączeniu do SemRush
-        String apiTest = this.apiPath + "users/countapiunits.html?key=" + this.apiKey; 
+        String apiTest = apiPath + apiCreditsPath + apiKey; 
         try {
             int statusCode;
             URL semRushUrl = new URL(apiTest);
@@ -83,26 +73,38 @@ public class SemrushAPIConnector {
         return credits; 
     }
         
-    public void buildQuery(String website, String lang, String report_type, String[] params, String YYYYMM, int rows) {
-        //   
-        String localDate = new SimpleDateFormat("yyyyMM").format(new Date());
-        if (localDate.equals(YYYYMM)) YYYYMM = "live";
+    public boolean buildQuery(String website, String lang, String report_type, String[] params, String YYYYMM, int rows) {
+        //walidacja daty, konwersja live   
+        Date today = new Date();
+        String localDate = new SimpleDateFormat("yyyyMM").format(today);
+        if (YYYYMM.equals("live")) YYYYMM = localDate;
         
-        //
-        String diplay_date = "";
-        if (!YYYYMM.equals("live") && report_type.equals("domain_organic")) {
+        try {
+            Date checkdate = new SimpleDateFormat("yyyyMM").parse(YYYYMM);
+            if (today.before(checkdate)) return false;
+            
+        } catch (ParseException ex) {
+            System.err.println("Bład formatu daty" + ex);
+        }
+        
+        
+        //Raport fraz
+        String sort = "tr_desc"; //sortuj wg udziału fraz w ruchu
+        String diplay_date = ""; //dane live - brak filtru
+        if (!localDate.equals(YYYYMM) && report_type.equals("domain_organic")) { //dane historyczne dla fraz
             diplay_date = "&display_date="+YYYYMM+"15"; //15 = bazy danych
             this.currDate = YYYYMM;
-        } else this.currDate = localDate;
+        } else this.currDate = localDate; 
         
-        //
-        String sort = "tr_desc";
-        if (report_type.equals("domain_rank_history")) sort = "dt_desc";
-        if (report_type.equals("domain_organic_organic")) sort = "np_desc";
+        //Raport statysytk
+        if (report_type.equals("domain_rank_history")) sort = "dt_desc"; //sortowanie staty historyczne wg daty
         
-        //
+        //Raport konkurncji
+        if (report_type.equals("domain_organic_organic")) sort = "np_desc";//sortowanie konkurencja
+        
+        //Buduj zapytanie do API
         this.apiPath = "http://api.semrush.com/"
-                        + "?type=" + report_type//"domain_organic"
+                        + "?type=" + report_type//np. domain_organic
                         + "&key=" + this.apiKey
                         + "&export_escape=1&display_limit=" + rows
                         + "&export_columns=" + String.join(",", params)
@@ -110,9 +112,13 @@ public class SemrushAPIConnector {
                         + "&database=" + lang
                         + diplay_date
                         + "&display_sort="+sort;
+        
+        //pozostałe setter'y - na potrzeby monitororwania stanu obiektu
         this.inputParams = params;
         this.mainWebsite = website;
         this.lang = lang;
+        
+        return true;
     }
     
      public APIData fetchData(String[] input_param_labels, Integer rep_type){
@@ -157,7 +163,7 @@ public class SemrushAPIConnector {
                                             }   responseApi.addAPIWebsiteStat(this.mainWebsite, apiWS);
                                             break;
                                         default:
-                                            //konkurenci
+                                            //dane o konkurencji
                                             APIWebsiteCompetitors apiComp = new APIWebsiteCompetitors();
                                             for (int k = 0; k < output.length; k++){
                                                 if (input_param_labels[k] != null)
@@ -187,10 +193,12 @@ public class SemrushAPIConnector {
         return responseApi;        
 
     }
+     
     //raporty
      
-    public boolean getPhrasesReport(APIData api_data, String website, String lang, String YYYYMM, int rows) {
+    public boolean getWebsitePhrasesReport(APIData api_data, String website, String lang, String YYYYMM, int rows) {
         
+               
         String[] raportFraz = {"phrase", "url", "position", "volumen", "trafficShare", "timestamp"};
         //String[] raportFraz = {"Ph","Ur","Po","Nq","Tr","Ts"};
         List<String> param_labels = new ArrayList<>();
@@ -205,7 +213,8 @@ public class SemrushAPIConnector {
         //System.err.println( String.join(",", params) + " : " + String.join(",", param_labels));
         String type = "domain_organic";
         if (params.size()>0) {
-            buildQuery(website, lang, type, params.toArray(new String[params.size()]), YYYYMM, rows);   
+            Boolean query = buildQuery(website, lang, type, params.toArray(new String[params.size()]), YYYYMM, rows);
+            if (query == false) return false;
             APIData temp_data = fetchData( param_labels.toArray(new String[param_labels.size()]), 0);
             if (temp_data.getApiCode() == 200) {
                 api_data.setApiCode(200);
@@ -223,23 +232,28 @@ public class SemrushAPIConnector {
     }
     
     
-    public boolean getDomainStatsReport(APIData api_data, String website, String lang, String YYYYMM) {
+    public boolean getWebsiteStatsReport(APIData api_data, String website, String lang, Boolean live) {
         /* 
-        obecnie pobieramy albo dane live tj biezacy miesiac, 1 wynik
-        albo 12 miesiacy wstecz (do biezacego). Mozna wiecej - max 36.
-        czyli albo live albo 12 mc historycznych. 
-        Nie ma znaczenia czy czy podasz datę przed 2 mc czy 10 lat.
-        Attrybut tak zostawiam bo w razie czego mozemy uwzglednic dokladnie żądany zakres dat
-        */
+        live = false -> dane historyczne.
+        Nie sa sie filtrować poprzez API, biorą X wierszy od danej daty (musi być sortowanie w zapytaniu)
+        */ 
         String type = "domain_rank_history"; //domyślnie raport historyczny, tzn do miesiąca poprzedzajacego biezacy
-        String localDate = new SimpleDateFormat("yyyyMM").format(new Date());
         String[] raportFraz = {"hist_date", "traffic", "keywords"};
                 
-        if (localDate.equals(YYYYMM) || YYYYMM.equals("live")) {
+        //live
+        String localDate = new SimpleDateFormat("yyyyMM").format(new Date()); 
+        if (live) {
             type = "domain_rank"; //jeśli data jak bieżący miesiąc to SemRush zwraca dane "live"
-            YYYYMM = "live";
             raportFraz = new String[] {"traffic", "keywords"};
+            
+        } else {
+          Calendar c = Calendar.getInstance(); 
+          c.setTime( new Date()); 
+          c.add(Calendar.MONTH, -1);
+          localDate = new SimpleDateFormat("yyyyMM").format(c.getTime());
         }
+       
+        
         
         List<String> param_labels = new ArrayList<>();
         List<String> params = new ArrayList<>();
@@ -253,14 +267,15 @@ public class SemrushAPIConnector {
         //System.err.println( String.join(",", params) + " : " + String.join(",", param_labels));
 
         if (params.size()>0) {
-            buildQuery(website, lang, type, params.toArray(new String[params.size()]), YYYYMM, 12);   
+            Boolean query = buildQuery(website, lang, type, params.toArray(new String[params.size()]), localDate, 12);  
+            if (query == false) return false;
             APIData temp_data = fetchData( param_labels.toArray(new String[param_labels.size()]), 1);
             if (temp_data.getApiCode() == 200) {
                 api_data.setApiCode(200);
                 api_data.setApiKey(this.getAPIKey());
                 api_data.setLang(this.getLang());
-                api_data.setDate(YYYYMM.equals("live")?localDate:YYYYMM);
-                api_data.setIsLive(YYYYMM.equals("live"));
+                api_data.setDate(localDate);
+                api_data.setIsLive(live);
                 api_data.setResultsWebsiteStats(temp_data.getResultsWebsiteStats());
                 return true;
             }
@@ -269,8 +284,12 @@ public class SemrushAPIConnector {
         return false;
     }
 
-    public boolean getCompetitorsReport(APIData api_data, String website, String lang, Integer rows) {
-
+    public boolean getWebsiteCompetitorsReport(APIData api_data, String website, String lang, Integer rows) {
+        /*
+        API nie oferuje histronycznych konurentów. 
+        Jezeli Klient ma abonament to my z czasem zbudujemy listę historycznych konkurentów 
+        */
+        
         String type = "domain_organic_organic"; //domyślnie raport historyczny, tzn do miesiąca poprzedzajacego biezacy
         String[] raportFraz = {"competitor", "relevance", "commonKeywords" ,"traffic", "keywords"};
         String localDate =  new SimpleDateFormat("yyyyMM").format(new Date());
@@ -286,7 +305,8 @@ public class SemrushAPIConnector {
         //System.err.println( String.join(",", params) + " : " + String.join(",", param_labels));
 
         if (params.size()>0) {
-            buildQuery(website, lang, type, params.toArray(new String[params.size()]), "live", rows);   
+            Boolean query = buildQuery(website, lang, type, params.toArray(new String[params.size()]), "live", rows); 
+            if (query == false) return false;
             APIData temp_data = fetchData( param_labels.toArray(new String[param_labels.size()]), 2);
             if (temp_data.getApiCode() == 200) {
                 api_data.setApiCode(200);
@@ -304,7 +324,6 @@ public class SemrushAPIConnector {
     
        
     //getters and setters
-    
         
     public void setAPIKey(String apiKey){
         this.apiKey = apiKey;

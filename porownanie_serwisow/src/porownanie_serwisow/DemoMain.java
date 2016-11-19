@@ -7,7 +7,6 @@ package porownanie_serwisow;
 import porownanie_serwisow.api.*;
 import java.util.*;
 
-
  /*
  * @author pfilipiak
  */
@@ -17,7 +16,7 @@ public class DemoMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        //Kod demo do Main.java
         //String apiKey = "-nie-zapisywac-api-na-githubie-";
         String apiKey = "---";
         Boolean isdone;
@@ -29,25 +28,30 @@ public class DemoMain {
         
         if (credits > 0) {
         APIData test = new APIData();
+                
+        //live demo
+        System.out.println("DEMO DANYCH LIVE:");
         
-        isdone = sem.getPhrasesReport(test, "pwr.wroc.pl", "pl", "201611", 3);
-        System.out.println("czy dziala:" + isdone);
+        sem.getWebsiteStatsReport(test, "pwr.wroc.pl", "pl", true); //statystyki bieżący miesiąc
+        sem.getWebsitePhrasesReport(test, "pwr.wroc.pl", "pl", "201611", 5); //top 5 fraz
+        sem.getWebsiteCompetitorsReport(test, "pwr.wroc.pl", "pl", 5); //top 5 konkurentów
                
-        System.out.println(sem.getApiPath()); 
+        //System.out.println(sem.getApiPath());  //wyswietla zapytanie do ostatnio wykonanego raportu
+        System.out.println(test.printAPIWebsiteStats());
+        System.out.println(test.printAPIWebsitePhrases());
+        System.out.println(test.printAPIWebsiteCompetitors());
+        System.out.println("Czy dane live: " + test.getIsLive() + ", data " + test.getDate());
+
+        //dane histryczne - brak konkurentów historycznych (bezposrednio przez API, tylko nasza DB)
+        System.out.println("\r\nDEMO DANYCH HISTORYCZNYCH:");
+        
+        sem.getWebsitePhrasesReport(test, "pwr.wroc.pl", "pl", "201606", 5); //top 5 fraz czerwiec 2016
+        sem.getWebsiteStatsReport(test, "pwr.wroc.pl", "pl", false); //statystyki 12 mc wstecz
+        
+        System.out.println(test.printAPIWebsiteStats());
         System.out.println(test.printAPIWebsitePhrases());
         System.out.println(test.getIsLive() + " " + test.getDate());
         
-        
-        sem.getDomainStatsReport(test, "pwr.wroc.pl", "pl", "201611");
-        System.out.println(sem.getApiPath()); 
-        System.out.println(test.printAPIWebsiteStats());
-        System.out.println(test.getIsLive() + " " + test.getDate());
-
-        
-        sem.getCompetitorsReport(test, "pwr.wroc.pl", "pl", 4);
-        System.out.println(sem.getApiPath()); 
-        System.out.println(test.printAPIWebsiteCompetitors());
-        System.out.println(test.getIsLive() + " " + test.getDate());
         }
     }
 
