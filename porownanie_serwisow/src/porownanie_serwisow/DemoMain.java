@@ -5,7 +5,6 @@
  */
 package porownanie_serwisow;
 import porownanie_serwisow.api.*;
-import java.util.*;
 
  /*
  * @author pfilipiak
