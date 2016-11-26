@@ -67,9 +67,10 @@ public class APIData {
 
     //wydruk wartości w mapach
     public String printAPIWebsitePhrases(){
-        //if map.get("keyword_lp")..
+       Integer stop = 0;
        if (this.resultsMapApi != null) {
             this.resultsMapApi.entrySet().forEach((entry) -> {
+                
                 String[] key = entry.getKey();
                 APIWebsitePhrases value = entry.getValue();
                 System.out.print("key: "+Arrays.toString(key) + " ");
@@ -78,7 +79,23 @@ public class APIData {
        }
        return "printed API results";
     }
-    
+ 
+     public String printAPIWebsitePhrases(Integer offset){
+       Integer i = 0;  
+       if (this.resultsWebsiteStat != null) {
+            Iterator it = this.resultsWebsiteStat.entrySet().iterator();
+            while (i < offset & it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                String[] key = (String[])pair.getKey(); 
+                APIWebsitePhrases value = (APIWebsitePhrases)pair.getValue();
+                System.out.print("key: "+Arrays.toString(key) + " ");
+                System.out.println("value: "+value.EntityToString());
+                it.remove(); // avoids a ConcurrentModificationException
+                i++;
+            }
+       }
+       return "printed stats";
+    }
     
      public String printAPIWebsiteStats(){
        if (this.resultsWebsiteStat != null) {

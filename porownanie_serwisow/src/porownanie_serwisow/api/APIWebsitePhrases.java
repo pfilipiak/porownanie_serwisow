@@ -112,7 +112,8 @@ public class APIWebsitePhrases {
     }
 
     public void setTrafficShare(String trafficShare) {
-        this.trafficShare = Float.parseFloat(trafficShare.trim());
+        trafficShare = trafficShare.replace(",", ".").trim();
+        this.trafficShare = Float.parseFloat(trafficShare);
     }
         
     public Long getTimestamp() {

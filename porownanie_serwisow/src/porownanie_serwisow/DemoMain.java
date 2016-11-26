@@ -20,12 +20,30 @@ public class DemoMain {
         String apiKey = "---";
         Boolean isdone;
         Long credits;
-        
-        SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
+              SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
         credits = sem.TestAPIKey();
         System.out.println("credits:" + credits);
+        Boolean testMode = true;
+        // private Boolean testMode = true; w SemRushAPIConnector + urle do danych temp
         
-        if (credits > 0) {
+        if (testMode){ 
+            /* 
+            w testcie mamy dane skopiowane z api dla
+               - raport fraz live (24.11.2016), ceneo, 111 tys rekodrów
+               - raport fraz historycznych (październik 2016), ceneo, 47 tys rekrodów
+            */
+            APIData onlyTest = new APIData();           
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "live", 5); //top 5 fraz           
+            System.out.println(onlyTest.printAPIWebsitePhrases());
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+            System.out.println("Ile wierszy:" + onlyTest.getResultsWebsitePhrases().size());
+            
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "201610", 5); //top 5 fraz           
+            System.out.println(onlyTest.printAPIWebsitePhrases());
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+        }
+        
+        if (testMode==false && credits > 0L) {
         APIData test = new APIData();
                 
         //live demo
@@ -53,6 +71,8 @@ public class DemoMain {
         
         }
     }
+
+        
 
     public DemoMain() {
  

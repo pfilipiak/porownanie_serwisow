@@ -23,6 +23,10 @@ public class SemrushAPIConnector {
     private String currDate;
     private String mainWebsite;
     private final Map<String, String> APIDictionary = new HashMap<String, String>();
+    //do testów, jesli masz zapisany output API
+    private Boolean testMode = true;
+    private String apiTestOrganicLiveData = "http://localhost:10001/semrush/semrush_live_demo"; 
+    private String apiTestOrganicHistData = "http://localhost:10001/semrush/semrush_201610_demo"; 
     
     
     public SemrushAPIConnector(String apiKey) {
@@ -70,11 +74,15 @@ public class SemrushAPIConnector {
          } catch (IOException e){
             System.err.println("Błąd połączenia: " + e);
         }
+        
         return credits; 
     }
         
-    public boolean buildQuery(String website, String lang, String report_type, String[] params, String YYYYMM, int rows) {
-        //walidacja daty, konwersja live   
+    public boolean buildQuery(String website, String lang, String report_type, String[] params, String YYYYMM, int rows)    {
+        //jesli testy api
+        String testAPIPath = "";
+        //walidacja daty, konwersja live
+        Boolean qresult = false;
         Date today = new Date();
         String localDate = new SimpleDateFormat("yyyyMM").format(today);
         if (YYYYMM.equals("live")) YYYYMM = localDate;
@@ -94,13 +102,25 @@ public class SemrushAPIConnector {
         if (!localDate.equals(YYYYMM) && report_type.equals("domain_organic")) { //dane historyczne dla fraz
             diplay_date = "&display_date="+YYYYMM+"15"; //15 = bazy danych
             this.currDate = YYYYMM;
-        } else this.currDate = localDate; 
+            testAPIPath = this.apiTestOrganicHistData;
+            qresult = true;
+        } else {
+            this.currDate = localDate; 
+            testAPIPath = this.apiTestOrganicLiveData;
+            qresult = true;
+        }
         
         //Raport statysytk
-        if (report_type.equals("domain_rank_history")) sort = "dt_desc"; //sortowanie staty historyczne wg daty
+        if (report_type.equals("domain_rank_history")) {
+            sort = "dt_desc";
+            qresult = true;
+        } //sortowanie staty historyczne wg daty
         
         //Raport konkurncji
-        if (report_type.equals("domain_organic_organic")) sort = "np_desc";//sortowanie konkurencja
+        if (report_type.equals("domain_organic_organic")){
+            sort = "np_desc";
+            qresult = true;
+        }//sortowanie konkurencja
         
         //Buduj zapytanie do API
         this.apiPath = "http://api.semrush.com/"
@@ -112,6 +132,9 @@ public class SemrushAPIConnector {
                         + "&database=" + lang
                         + diplay_date
                         + "&display_sort="+sort;
+        
+        if (this.testMode == true) this.apiPath = testAPIPath;
+        
         
         //pozostałe setter'y - na potrzeby monitororwania stanu obiektu
         this.inputParams = params;
@@ -141,7 +164,7 @@ public class SemrushAPIConnector {
                                 readStr = readStr.replace("\";\"", "#");
                                 readStr = readStr.replace("\"", "").trim();
                                 String output[] = readStr.split("[#]+"); //czyscimy wynik, rozbijamy do tablicy
-                                //System.out.println(readStr);
+                                
                                 if (output != null){                                    
                                     //linia po linii budujemy mape z obiektami
                                     switch (rep_type) {
@@ -150,9 +173,9 @@ public class SemrushAPIConnector {
                                             APIWebsitePhrases apiDE = new APIWebsitePhrases();
                                             for (int k = 0; k < output.length; k++){
                                                 if (input_param_labels[k] != null)
-                                                    apiDE.setAttribute(input_param_labels[k], output[k]);
-                                                // System.out.println(input_param_labels[k] + " : " + output[k]);
-                                            }   responseApi.addAPIWebsitePhrase(apiDE);
+                                                apiDE.setAttribute(input_param_labels[k], output[k]);
+                                                //System.out.println(input_param_labels[k] + " : " + output[k]);
+                                            } responseApi.addAPIWebsitePhrase(apiDE);
                                             break;
                                         case 1:
                                             //statystyki serwisu
