@@ -33,13 +33,13 @@ public class DemoMain {
                - raport fraz historycznych (październik 2016), ceneo, 47 tys rekrodów
             */
             APIData onlyTest = new APIData();           
-            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "live", 5); //top 5 fraz           
-            System.out.println(onlyTest.printAPIWebsitePhrases());
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "live", 8); //top 5 fraz           
             System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
             System.out.println("Ile wierszy:" + onlyTest.getResultsWebsitePhrases().size());
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
             
-            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "201610", 5); //top 5 fraz           
-            System.out.println(onlyTest.printAPIWebsitePhrases());
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "201610", 8); //top 5 fraz           
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
             System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
         }
         

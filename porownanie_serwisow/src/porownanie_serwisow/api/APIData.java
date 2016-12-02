@@ -81,20 +81,18 @@ public class APIData {
     }
  
      public String printAPIWebsitePhrases(Integer offset){
-       Integer i = 0;  
+       Integer cc = 0;  
+       String res = "";
        if (this.resultsWebsiteStat != null) {
-            Iterator it = this.resultsWebsiteStat.entrySet().iterator();
-            while (i < offset & it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                String[] key = (String[])pair.getKey(); 
-                APIWebsitePhrases value = (APIWebsitePhrases)pair.getValue();
-                System.out.print("key: "+Arrays.toString(key) + " ");
-                System.out.println("value: "+value.EntityToString());
-                it.remove(); // avoids a ConcurrentModificationException
-                i++;
-            }
+           for (String[] key : this.resultsMapApi.keySet()) {
+                res += this.resultsMapApi.get(key).EntityToString() + "\r\n";  
+                //System.out.print("key: "+Arrays.toString(key) + " ");
+                //System.out.println("value: "+ this.resultsMapApi.get(key).EntityToString());
+                if (cc >= offset) break;
+                cc++;    
+           }
        }
-       return "printed stats";
+       return "printed stats, with limit: " + cc + "\r\n" + res;
     }
     
      public String printAPIWebsiteStats(){
