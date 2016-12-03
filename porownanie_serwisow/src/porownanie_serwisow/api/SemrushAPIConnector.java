@@ -21,6 +21,7 @@ public class SemrushAPIConnector {
     private String [] inputParams;
     private String lang = "pl";
     private String currDate;
+    private Boolean isLive = false;
     private String mainWebsite;
     private final Map<String, String> APIDictionary = new HashMap<String, String>();
     //do testów, jesli masz zapisany output API
@@ -85,7 +86,7 @@ public class SemrushAPIConnector {
         Boolean qresult = false;
         Date today = new Date();
         String localDate = new SimpleDateFormat("yyyyMM").format(today);
-        if (YYYYMM.equals("live")) YYYYMM = localDate;
+        if (YYYYMM.equals("live") || YYYYMM.isEmpty()) YYYYMM = localDate;
         
         try {
             Date checkdate = new SimpleDateFormat("yyyyMM").parse(YYYYMM);
@@ -102,10 +103,12 @@ public class SemrushAPIConnector {
         if (!localDate.equals(YYYYMM) && report_type.equals("domain_organic")) { //dane historyczne dla fraz
             diplay_date = "&display_date="+YYYYMM+"15"; //15 = bazy danych
             this.currDate = YYYYMM;
+            this.isLive = false;
             testAPIPath = this.apiTestOrganicHistData;
             qresult = true;
         } else {
             this.currDate = localDate; 
+            this.isLive = true;
             testAPIPath = this.apiTestOrganicLiveData;
             qresult = true;
         }
@@ -226,7 +229,8 @@ public class SemrushAPIConnector {
         //String[] raportFraz = {"Ph","Ur","Po","Nq","Tr","Ts"};
         List<String> param_labels = new ArrayList<>();
         List<String> params = new ArrayList<>();
-
+        if (YYYYMM.isEmpty()) YYYYMM = "live";
+        
         for (int i=0; i < raportFraz.length; i++) {
             if (APIDictionary.get(raportFraz[i].toLowerCase()) != null) {
                params.add(APIDictionary.get(raportFraz[i].toLowerCase()));
@@ -244,7 +248,7 @@ public class SemrushAPIConnector {
                 api_data.setApiKey(this.getAPIKey());
                 api_data.setLang(this.getLang());
                 api_data.setDate(getCurrDate());
-                api_data.setIsLive(YYYYMM.equals("live"));
+                api_data.setIsLive(this.isLive);
                 api_data.setResultsWebsitePhrases(temp_data.getResultsWebsitePhrases());
                 return true;
             }

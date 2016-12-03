@@ -26,7 +26,7 @@ public class DemoMain {
         Boolean testMode = true;
         // private Boolean testMode = true; w SemRushAPIConnector + urle do danych temp
         
-        if (testMode){ 
+        if (testMode){
             /* 
             w testcie mamy dane skopiowane z api dla
                - raport fraz live (24.11.2016), ceneo, 111 tys rekodrów
