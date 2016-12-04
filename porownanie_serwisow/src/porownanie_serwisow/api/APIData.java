@@ -81,7 +81,7 @@ public class APIData {
     }
  
      public String printAPIWebsitePhrases(Integer offset){
-       Integer cc = 0;  
+       Integer cc = 1;  
        String res = "";
        if (this.resultsWebsiteStat != null) {
            for (String[] key : this.resultsMapApi.keySet()) {
