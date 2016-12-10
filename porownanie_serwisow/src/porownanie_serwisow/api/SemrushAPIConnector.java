@@ -25,7 +25,7 @@ public class SemrushAPIConnector {
     private String mainWebsite;
     private final Map<String, String> APIDictionary = new HashMap<String, String>();
     //do testów, jesli masz zapisany output API
-    private Boolean testMode = true;
+    public Boolean testMode = true;
     private String apiTestOrganicLiveData = "http://localhost:10001/semrush/semrush_live_demo"; 
     private String apiTestOrganicHistData = "http://localhost:10001/semrush/semrush_201610_demo"; 
     
