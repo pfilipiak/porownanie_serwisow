@@ -162,6 +162,7 @@ public class SemrushAPIConnector {
             if (testapi > 0L) 
                 statusCode = 200; 
             else statusCode = testapi.intValue();
+            if (this.testMode == true) statusCode = 200; 
             //System.err.println("hghgh: "+ TestAPIKey() + ", " + this.apiKey + ", " + statusCode);
             
             responseApi.setApiCode(statusCode);
