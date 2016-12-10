@@ -16,8 +16,8 @@ import java.text.*;
 
 public class SemrushAPIConnector {
     private String apiKey;
-    private String apiPath = "https://www.semrush.com/"; //root
-    private String apiCreditsPath = "users/countapiunits.html?key=";
+    private String apiPath = "";
+    private String apiCreditsPath = "https://www.semrush.com/users/countapiunits.html?key=";
     private String [] inputParams;
     private String lang = "pl";
     private String currDate;
@@ -53,7 +53,7 @@ public class SemrushAPIConnector {
     public Long TestAPIKey(){
         
         Long credits = -2L; //wartośc gdy bład przy połączeniu do SemRush
-        String apiTest = apiPath + apiCreditsPath + apiKey; 
+        String apiTest = apiCreditsPath + apiKey; 
         try {
             int statusCode;
             URL semRushUrl = new URL(apiTest);
@@ -65,9 +65,10 @@ public class SemrushAPIConnector {
                 while ((readStr = input.readLine()) != null)
                    if (!readStr.isEmpty()) { //jesli jest o
                         try {
-                            credits = (Long) NumberFormat.getInstance().parse(readStr.trim());
-                        } catch(ParseException e) {
+                            credits = Long.parseLong(readStr.trim());
+                        } catch(NumberFormatException er) {
                             credits = -1L; //bład klucza API
+                            //System.out.println("credits err:" + er);
                         }                        
                     }    
             }
@@ -152,10 +153,16 @@ public class SemrushAPIConnector {
         String content = "";    
                 
         try {
-            int statusCode;
+            int statusCode = 0;
             URL semRushUrl = new URL(apiPath);
-            HttpURLConnection http = (HttpURLConnection)semRushUrl.openConnection();
-            statusCode = http.getResponseCode();
+            //HttpURLConnection http = (HttpURLConnection)semRushUrl.openConnection();
+            //http.getResponseCode();
+            
+            Long testapi = TestAPIKey();
+            if (testapi > 0L) 
+                statusCode = 200; 
+            else statusCode = testapi.intValue();
+            //System.err.println("hghgh: "+ TestAPIKey() + ", " + this.apiKey + ", " + statusCode);
             
             responseApi.setApiCode(statusCode);
             if (statusCode == 200) {
