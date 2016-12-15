@@ -48,15 +48,17 @@ public class APIWebsitePhrases {
      
     //    
     public void setAttribute(String attr_name, String attr_value) {
-        String attr = attr_name.toLowerCase().trim();
-        switch (attr) {
-            case "phrase" : this.setPhrase(attr_value); break;
-            case "url": this.setUrl(attr_value); break;
-            case "position": this.setPosition(attr_value); break;
-            case "volumen": this.setVolumen(attr_value); break;
-            case "trafficshare": this.setTrafficShare(attr_value); break;
-            case "timestamp": this.setTimestamp(attr_value); break;
-        default: break;
+        if (attr_name != null) {
+            String attr = attr_name.toLowerCase().trim();
+            switch (attr) {
+                case "phrase" : this.setPhrase(attr_value); break;
+                case "url": this.setUrl(attr_value); break;
+                case "position": this.setPosition(attr_value); break;
+                case "volumen": this.setVolumen(attr_value); break;
+                case "trafficshare": this.setTrafficShare(attr_value); break;
+                case "timestamp": this.setTimestamp(attr_value); break;
+            default: break;
+            }
         }
     }   
 
