@@ -22,7 +22,7 @@ public class ExportCSV {
         Connection conn = null;
         
         
-        String url = "jdbc:postgresql://93.--.233.149:5432/zpi_project";
+        String url = "jdbc:postgresql://931.158.233.149:5432/zpi_project";
         String user = "postgres";
         String password = "--";
 

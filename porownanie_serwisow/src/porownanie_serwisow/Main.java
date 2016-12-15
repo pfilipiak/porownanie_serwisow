@@ -17,38 +17,65 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+  
         // TODO code application logic here
-        //bobobobobobobo
-        //System.err.println("dududu");
-        //Goodbye gb = new Goodbye("fackup");
-        //gb= new Goodbye();
-        //Hello he = new Hello();
         //String apiKey = "-nie-zapisywac-api-na-githubie-";
+        String apiKey = "xx-2fc1906300ddc89289961a1c3642a273";
+  Boolean isdone;
+        Long credits;
+              SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
+        credits = sem.TestAPIKey();
+        sem.testMode = true;
+        System.out.println("credits:" + credits);
+        Boolean testMode = false;
+        // private Boolean testMode = true; w SemRushAPIConnector + urle do danych temp
         
-        //String apiKey = "----";
-        String apiKey = "";
-        SemrushAPIConnector sm = new SemrushAPIConnector(apiKey);  
-        sm.buildQuery("wp.pl", "", "", "", 3);
-        APIData test = sm.runQuery();
-        //System.out.println(test.getAPIKey());
-        //System.out.println(test.getHTTPResCode());
-        //System.out.println(test.getContent()); 
+        if (testMode){
+            /* 
+            w testcie mamy dane skopiowane z api dla
+               - raport fraz live (24.11.2016), ceneo, 111 tys rekodrów
+               - raport fraz historycznych (październik 2016), ceneo, 47 tys rekrodów
+            */
+            APIData onlyTest = new APIData();           
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "live", 8); //top 5 fraz           
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+            System.out.println("Ile wierszy:" + onlyTest.getResultsWebsitePhrases().size());
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
+            
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "201610", 8); //top 5 fraz           
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+        }
         
-        System.out.println(test.printAPIDataEntity()); 
-        //int count[] = {34, 22,10,60,30,22};
-        /*Map<String[], String[]> map = new HashMap<String[], String[]>();
-        String [] s1 = {"kupa", "dupa"};
-        String [] s2 = {"kupa", "dupa", "lupa"};
-        map.put (s1,s1);
-        map.put(s2,s2);
-              
-        System.out.println(Arrays.toString(map.get(s2)));
-        */
-       // mapa.put("pierwszy", 1);
-       // mapa.put("drugi", 2);
-       // System.out.println(mapa.get("pierwszy")); //wypisze "1"
+        if (testMode==false && credits > 0L) {
+        APIData test = new APIData();
+                
+        //live demo
+        System.out.println("DEMO DANYCH LIVE:");
         
+        sem.getWebsiteStatsReport(test, "pwr.wroc.pl", "pl", true); //statystyki bieżący miesiąc
+        sem.getWebsitePhrasesReport(test, "pwr.wroc.pl", "pl", "201611", 5); //top 5 fraz
+        sem.getWebsiteCompetitorsReport(test, "pwr.wroc.pl", "pl", 5); //top 5 konkurentów
+               
+        //System.out.println(sem.getApiPath());  //wyswietla zapytanie do ostatnio wykonanego raportu
+        System.out.println(test.printAPIWebsiteStats());
+        System.out.println(test.printAPIWebsitePhrases());
+        System.out.println(test.printAPIWebsiteCompetitors());
+        System.out.println("Czy dane live: " + test.getIsLive() + ", data " + test.getDate());
+
+        //dane histryczne - brak konkurentów historycznych (bezposrednio przez API, tylko nasza DB)
+        System.out.println("\r\nDEMO DANYCH HISTORYCZNYCH:");
+        
+        sem.getWebsitePhrasesReport(test, "pwr.wroc.pl", "pl", "201606", 5); //top 5 fraz czerwiec 2016
+        sem.getWebsiteStatsReport(test, "pwr.wroc.pl", "pl", false); //statystyki 12 mc wstecz
+        
+        System.out.println(test.printAPIWebsiteStats());
+        System.out.println(test.printAPIWebsitePhrases());
+        System.out.println(test.getIsLive() + " " + test.getDate());
+        
+        }
     }
+
 
     public Main() {
  

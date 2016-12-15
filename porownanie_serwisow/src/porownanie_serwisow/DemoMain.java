@@ -17,7 +17,7 @@ public class DemoMain {
     public static void main(String[] args) {
         //Kod demo do Main.java
         //String apiKey = "-nie-zapisywac-api-na-githubie-";
-        String apiKey = "---";
+        String apiKey = "2fc1906300ddc89289961a1c3642a273";
         Boolean isdone;
         Long credits;
               SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
