@@ -17,7 +17,7 @@ public class DemoMain {
     public static void main(String[] args) {
         //Kod demo do Main.java
         //String apiKey = "-nie-zapisywac-api-na-githubie-";
-        String apiKey = "2fc1906300ddc89289961a1c3642a273";
+        String apiKey = "-----------------------------";
         Boolean isdone;
         Long credits;
               SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
@@ -76,6 +76,39 @@ public class DemoMain {
 
     public DemoMain() {
  
+        /*
+        String apiKey = " ";
+        Long credits;
+        SemrushAPIConnector sem = new SemrushAPIConnector(apiKey);  
+        sem.testMode = false;
+        credits = sem.TestAPIKey();
+        System.out.println("credits:" + credits);
+        ///
+        System.out.println("\r\nDEMO DANYCH HISTORYCZNYCH:");
+        APIData test1 = new APIData();    
+       // sem.getWebsiteStatsReport(test1, "saturn.pl", "pl", false); //statystyki 12 mc wstecz
+        System.out.println(test1.printAPIWebsiteStats());
+        
+        ////
+        sem.testMode = true;
+        System.out.println("credits:" + credits);
+        Boolean testMode = true;
+        // private Boolean testMode = true; w SemRushAPIConnector + urle do danych temp
+        
+        if (testMode){
+            APIData onlyTest = new APIData();           
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "live", 8); //top 5 fraz           
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+            System.out.println("Ile wierszy:" + onlyTest.getResultsWebsitePhrases().size());
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
+            
+            sem.getWebsitePhrasesReport(onlyTest, "pwr.wroc.pl", "pl", "201610", 8); //top 5 fraz           
+            System.out.println(onlyTest.printAPIWebsitePhrases(5));
+            System.out.println("Czy dane live: " + onlyTest.getIsLive() + ", data " + onlyTest.getDate());
+        }
+
+        */
+
     }
     
     

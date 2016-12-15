@@ -25,6 +25,7 @@ public class przyklad {
                 e.printStackTrace();
                 return;
         }
+        
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery( "select * from bp_produkt_media_markt limit 10" );
         ResultSetMetaData rsMD = rs.getMetaData();
