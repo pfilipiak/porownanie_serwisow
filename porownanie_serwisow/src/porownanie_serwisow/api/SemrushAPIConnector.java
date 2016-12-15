@@ -122,7 +122,7 @@ public class SemrushAPIConnector {
         
         //Raport konkurncji
         if (report_type.equals("domain_organic_organic")){
-            sort = "np_desc";
+            sort = "cr_desc";
             qresult = true;
         }//sortowanie konkurencja
         
@@ -144,6 +144,7 @@ public class SemrushAPIConnector {
         this.inputParams = params;
         this.mainWebsite = website;
         this.lang = lang;
+        //System.out.print("api:"+ apiPath);
         
         return true;
     }
