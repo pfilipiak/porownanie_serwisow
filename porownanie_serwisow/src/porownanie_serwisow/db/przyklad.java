@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.ResultSetMetaData;
 /**
  *
  * @author pfilipiak
@@ -16,15 +17,27 @@ public class przyklad {
         Connection connection = null;
         try {
                 connection = DriverManager.getConnection(
-                                "jdbc:postgresql://--.--.233.149:5432/zpi_project", "postgres",
-                                "-----");
+                        "jdbc:postgresql://93.158.233.149:5432/zpi_project",
+                        "postgres",
+                        "1@3$qWeR");
         } catch (SQLException e) {
                 System.out.println("Connection Failed! Check output console");
                 e.printStackTrace();
                 return;
         }
         Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery( "select * from bp_produkt_media_markt" );
+        ResultSet rs = stmt.executeQuery( "select * from bp_produkt_media_markt limit 10" );
+        ResultSetMetaData rsMD = rs.getMetaData();
+        int columnsNumber = rsMD.getColumnCount();
+        while (rs.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) System.out.print(",  ");
+                String columnValue = rs.getString(i);
+                System.out.print(columnValue + " " + rsMD.getColumnName(i));
+            }
+            System.out.println("");
+        }
+        /*
         while ( rs.next() ) {
             String keyword = rs.getString("keyword");
             int position = rs.getInt("position");
@@ -46,6 +59,8 @@ public class przyklad {
             System.out.print( "month = " + month+ "@@" );
             System.out.println();
          }
+
+        */
          rs.close();
          stmt.close();
          connection.close();
