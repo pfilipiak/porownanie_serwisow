@@ -1,3 +1,5 @@
+package porownanie_serwisow.db;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -43,8 +45,8 @@ public class JDBCExample {
 		try {
 
 			c = DriverManager.getConnection(
-					"jdbc:postgresql://93.158.233.149:5432/zpi_project", "postgres",
-                                "1@3$qWeR");
+				"jdbc:postgresql://--.---.233.149:5432/zpi_project", "postgres",
+                                "----");
 
 		} catch (SQLException e) {
 
