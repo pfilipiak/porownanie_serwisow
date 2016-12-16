@@ -48,16 +48,17 @@ public class APIWebsitePhrases {
      
     //    
     public void setAttribute(String attr_name, String attr_value) {
-        if (attr_name != null) {
+        if (attr_name != null && attr_value != null) {
             String attr = attr_name.toLowerCase().trim();
-            switch (attr) {
-                case "phrase" : this.setPhrase(attr_value); break;
-                case "url": this.setUrl(attr_value); break;
-                case "position": this.setPosition(attr_value); break;
-                case "volumen": this.setVolumen(attr_value); break;
-                case "trafficshare": this.setTrafficShare(attr_value); break;
-                case "timestamp": this.setTimestamp(attr_value); break;
-            default: break;
+            if (attr_value.trim() != "")
+                switch (attr) {
+                    case "phrase" : this.setPhrase(attr_value); break;
+                    case "url": this.setUrl(attr_value); break;
+                    case "position": this.setPosition(attr_value); break;
+                    case "volumen": this.setVolumen(attr_value); break;
+                    case "trafficshare": this.setTrafficShare(attr_value); break;
+                    case "timestamp": this.setTimestamp(attr_value); break;
+                default: break;
             }
         }
     }   
@@ -127,9 +128,18 @@ public class APIWebsitePhrases {
     }  
     
     public void setTimestamp(String timestamp) {
-        this.timestamp = Long.parseLong(timestamp.trim());
+        
+      try{  
+            this.timestamp = Long.parseLong(timestamp.trim());
+         }  
+          catch(NumberFormatException err)  
+         {  
+           java.sql.Timestamp ts = java.sql.Timestamp.valueOf(timestamp.trim());
+           this.timestamp = ts.getTime();           
+         }  
+
     }   
 
-      
+
     
 }

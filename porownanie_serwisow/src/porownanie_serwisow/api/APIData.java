@@ -16,7 +16,7 @@ public class APIData {
     private String apiKey; //apikey po ktorym nastąpiło (skuteczne) połaczenie
     private int apiCode; //kod odpowiedzi api. Kod: 40x - błąd klucza api, kod 200 - działa. Możliwy tekst 'Error Code: XX' - api dziala ale brak danych dla serwisu
     private String date; //data pobrania dla live - dany dzien YYYY-MM-DD, dla historycznych (miesiecznych) YYYY-MM
-    private Map<String[], APIWebsitePhrases> resultsMapApi; //mapa <keyword, landinPage> i obiekt typu APIWebsitePhrases
+    private Map<String[], APIWebsitePhrases> resultsWebsitePhrases; //mapa <keyword, landinPage> i obiekt typu APIWebsitePhrases
     private Map<String[], APIWebsiteStats> resultsWebsiteStat; //mapa <serwis, data> i obiekt typu APIWebsiteStats
     private Map<String[], APIWebsiteCompetitors> resultsWebsiteCompetitors; //mapa <konkurent, poziom konkur.> i obiekt APIWebsiteCompetitors
     private Boolean isLive; 
@@ -26,7 +26,7 @@ public class APIData {
         this.apiKey = "";
         this.apiCode = -1;
         this.isLive = true;
-        this.resultsMapApi = new HashMap<String[], APIWebsitePhrases>();  
+        this.resultsWebsitePhrases = new HashMap<String[], APIWebsitePhrases>();  
         this.resultsWebsiteStat = new HashMap<String[], APIWebsiteStats>();  
         this.resultsWebsiteCompetitors = new HashMap<String[], APIWebsiteCompetitors>();
         this.date = new SimpleDateFormat("yyyyMM").format(new Date()); //domyślnie ustawianmy na Live data
@@ -41,9 +41,9 @@ public class APIData {
         phrase_url[1] = apiDE.getUrl();
         
         APIWebsitePhrases valid;
-        valid = resultsMapApi.get(apiDE);
+        valid = resultsWebsitePhrases.get(apiDE);
         if (valid == null || (valid.getTimestamp() < apiDE.getTimestamp() ))
-            this.resultsMapApi.put(phrase_url, new APIWebsitePhrases(apiDE));
+            this.resultsWebsitePhrases.put(phrase_url, new APIWebsitePhrases(apiDE));
         //jeśl nie ma takiego obiektu lub timestamp jest nowszy niz timestamp dla znalezonego [phrase, url] 
                         
     }
@@ -68,8 +68,8 @@ public class APIData {
     //wydruk wartości w mapach
     public String printAPIWebsitePhrases(){
        Integer stop = 0;
-       if (this.resultsMapApi != null) {
-            this.resultsMapApi.entrySet().forEach((entry) -> {
+       if (this.resultsWebsitePhrases != null) {
+            this.resultsWebsitePhrases.entrySet().forEach((entry) -> {
                 
                 String[] key = entry.getKey();
                 APIWebsitePhrases value = entry.getValue();
@@ -84,10 +84,10 @@ public class APIData {
        Integer cc = 1;  
        String res = "";
        if (this.resultsWebsiteStat != null) {
-           for (String[] key : this.resultsMapApi.keySet()) {
-                res += this.resultsMapApi.get(key).EntityToString() + "\r\n";  
+           for (String[] key : this.resultsWebsitePhrases.keySet()) {
+                res += this.resultsWebsitePhrases.get(key).EntityToString() + "\r\n";  
                 //System.out.print("key: "+Arrays.toString(key) + " ");
-                //System.out.println("value: "+ this.resultsMapApi.get(key).EntityToString());
+                //System.out.println("value: "+ this.resultsWebsitePhrases.get(key).EntityToString());
                 if (cc >= offset) break;
                 cc++;    
            }
@@ -163,11 +163,15 @@ public class APIData {
     }
 
     public Map<String[], APIWebsitePhrases> getResultsWebsitePhrases() {
-        return resultsMapApi;
+        return resultsWebsitePhrases;
+    }
+    
+    public void clearWebsitePhrases() {
+        this.resultsWebsitePhrases.clear();
     }
 
-    public void setResultsWebsitePhrases(Map<String[], APIWebsitePhrases> resultsMapApi) {
-        this.resultsMapApi = resultsMapApi;
+    public void setResultsWebsitePhrases(Map<String[], APIWebsitePhrases> resultsWebsitePhrases) {
+        this.resultsWebsitePhrases = resultsWebsitePhrases;
         
     }   
 

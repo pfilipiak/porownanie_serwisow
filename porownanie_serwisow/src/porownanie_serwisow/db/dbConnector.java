@@ -23,9 +23,9 @@ import porownanie_serwisow.api.APIWebsitePhrases;
  */
 public class dbConnector {
     
-    private String dbsource =  "jdbc:postgresql://93.158.233.149:5432/zpi_project";
+    private String dbsource =  "jdbc:postgresql://--.158.233.149:5432/zpi_project";
     private String dbname =  "postgres";
-    private String dbpass =  "1@3$qWeR";
+    private String dbpass =  "---";
     private final Map<String, String> DBtoAPIDictionary = new HashMap<String, String>();
     
     
@@ -38,13 +38,15 @@ public class dbConnector {
         this.DBtoAPIDictionary.put("position", "position");
         this.DBtoAPIDictionary.put("search_volume", "volumen");
         this.DBtoAPIDictionary.put("traffic_share", "trafficshare");
-       // this.DBtoAPIDictionary.put("timestamp", "timestamp");
+        this.DBtoAPIDictionary.put("timestamp", "timestamp");
     }
     
-    private String checkDate(String YYYYMM) {
+    public String checkDate(String YYYYMM) {
         Date today = new Date();
         String localDate = new SimpleDateFormat("yyyyMM").format(today);
-        if (YYYYMM.equals("live") || YYYYMM.isEmpty()) return localDate;
+        if (YYYYMM.equals("live") || YYYYMM.isEmpty() || YYYYMM.equals(localDate)) {
+            return localDate;
+        }
         
         try {
             Date checkdate = new SimpleDateFormat("yyyyMM").parse(YYYYMM);
@@ -55,8 +57,7 @@ public class dbConnector {
         } catch (ParseException ex) {
             System.err.println("Bład formatu daty" + ex);
         }
-        
-        
+
         return localDate;
     }
     
@@ -71,46 +72,68 @@ public class dbConnector {
             case "trafficshare": this.setTrafficShare(attr_value); break;
             case "timestamp": this.setTimestamp(attr_value); break;
         */
+        website = website.toLowerCase().trim();
+        String sqltable = "";
+        switch (website) {
+            case "saturn.pl" : sqltable = "bp_produkt_saturn"; break;
+            case "mediamarkt.pl" : sqltable = "bp_produkt_media_markt"; break;
+            case "mediaexpert.pl" : sqltable = "bp_produkt_media_expert"; break;
+            case "euro.com.pl" : sqltable = "bp_produkt_euro"; break;
+            case "oleole.pl" : sqltable = "bp_produkt_oleole"; break;
+            case "morele.net" : sqltable = "bp_produkt_morele"; break;
+            //case "ceneo.pl" : sqltable = "bp_produkt_ceneo"; break;
+            default: break;
+        }
         
-        YYYYMM = checkDate(YYYYMM);        
+        if (sqltable.isEmpty()) return false;
+        
+        Date today = new Date();
+        YYYYMM = checkDate(YYYYMM);
+        String localDate = new SimpleDateFormat("yyyyMM").format(today);
+        if (!YYYYMM.equals(localDate)) sqltable += "_history";
+        
+        String order = " order by traffic_share desc ";
+        String limit = " limit " + rows;
+        if (rows < 1) limit = ""; //brak limitu jesli rows < 1
+        
+        String query = "select * from " + sqltable  + order + limit;
+        System.out.println(query);
         
         Connection connection = null;
         try {
-           connection = DriverManager.getConnection("jdbc:postgresql://93.158.233.149:5432/zpi_project", "postgres", "1@3$qWeR" );
+           connection = DriverManager.getConnection(dbsource, dbname, dbpass);
            Statement stmt = connection.createStatement();
            
-           ResultSet rs = stmt.executeQuery("select * from bp_produkt_media_markt limit 100");
-           
+           ResultSet rs = stmt.executeQuery(query);
            ResultSetMetaData rsMD = rs.getMetaData();
            int columnsNumber = rsMD.getColumnCount();
-           APIWebsitePhrases apiDE = new APIWebsitePhrases(); //frazy, urle i pozycje
            
+           api_data.clearWebsitePhrases();
             while (rs.next()) {
+                APIWebsitePhrases apiDE = new APIWebsitePhrases(); //frazy, urle i pozycje
                 for (int i = 1; i <= columnsNumber; i++) {
-                    String columnValue = rs.getString(i);
+                    
                     String apiAttr = DBtoAPIDictionary.get(rsMD.getColumnName(i));
+                    String columnValue = rs.getString(i);
                     if (apiAttr != null && columnValue != null) {
                         apiDE.setAttribute(apiAttr, columnValue);
-                        api_data.addAPIWebsitePhrase(apiDE);
+                        //System.out.println("d:" + columnValue + "\t" + rsMD.getColumnName(i) + "\t"+ apiAttr);   
                     }
-                    //if (i > 1) System.out.print(",  ");
-                    //System.out.println("d:" + columnValue + " " + rsMD.getColumnName(i) + " "+ apiAttr);
+                    
                 }
-               
+               api_data.addAPIWebsitePhrase(apiDE);
             }
 
            rs.close();
            stmt.close();
            connection.close();
-           
         
         } catch (SQLException e) {
                 System.out.println("Connection Failed! Check output console");
                 e.printStackTrace();
                 return false;
         }
-  
-                
+                 
         return true;
     
     }
