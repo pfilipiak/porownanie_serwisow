@@ -27,7 +27,10 @@ public class SemrushAPIConnector {
     //do testów, jesli masz zapisany output API
     public Boolean testMode = false;
     private String apiTestOrganicLiveData = "http://localhost:10001/semrush/semrush_live_demo"; 
-    private String apiTestOrganicHistData = "http://localhost:10001/semrush/semrush_201610_demo"; 
+    private String apiTestOrganicHistData = "http://localhost:10001/semrush/semrush_201610_demo";
+    private String apiTestStatLiveData = "http://localhost:10001/semrush/semrush_live_stats";
+    private String apiTestStatHistData = "http://localhost:10001/semrush/semrush_hist_stats";
+    private String apiTestCompetitorsLiveData = "http://localhost:10001/semrush/semrush_competitors";
     
     
     public SemrushAPIConnector(String apiKey) {
@@ -114,16 +117,25 @@ public class SemrushAPIConnector {
             qresult = true;
         }
         
+        
+        //Raport statysytk
+        if (report_type.equals("domain_rank")) {
+            qresult = true;
+            testAPIPath = this.apiTestStatLiveData;
+        } //sortowanie staty historyczne wg daty
+        
         //Raport statysytk
         if (report_type.equals("domain_rank_history")) {
             sort = "dt_desc";
             qresult = true;
+            testAPIPath = this.apiTestStatHistData;
         } //sortowanie staty historyczne wg daty
         
         //Raport konkurncji
         if (report_type.equals("domain_organic_organic")){
             sort = "cr_desc";
             qresult = true;
+            testAPIPath = this.apiTestCompetitorsLiveData;
         }//sortowanie konkurencja
         
         //Buduj zapytanie do API
