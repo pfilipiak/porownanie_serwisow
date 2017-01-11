@@ -16,11 +16,11 @@ public class przykladDB {
         
         Connection connection = null;
         
-        connection = DriverManager.getConnection("jdbc:postgresql://--.158.233.149:5432/zpi_project", "postgres", "-----" );
+        connection = DriverManager.getConnection("jdbc:postgresql://93.158.233.149:5432/zpi_project", "postgres", "1@3$qWeR" );
         Statement stmt = connection.createStatement();
-           
-        ResultSet rs = stmt.executeQuery("select * from bp_produkt_oleole order by traffic_share desc limit 10");
-           
+        //ResultSet rs = stmt.executeQuery("select distinct id, domain from bp_produkt_saturn_konkurencja");
+        ResultSet rs = stmt.executeQuery("select recognize_text from d_bp_produkt where id=3");
+                                                        
         ResultSetMetaData rsMD = rs.getMetaData();
         int columnsNumber = rsMD.getColumnCount();
          while (rs.next()) {
@@ -29,7 +29,7 @@ public class przykladDB {
                     
                     String apiAttr = rsMD.getColumnName(i);
                     String columnValue = rs.getString(i);
-                    System.out.println(columnValue + "\t" + "\t"+ apiAttr);   
+                    System.out.println(apiAttr + "\t" + columnValue);   
                     }
                     
                 }
