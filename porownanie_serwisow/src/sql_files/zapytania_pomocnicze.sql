@@ -262,3 +262,11 @@ select * from bp_compar_1_2_3_4_5_6 where search_volume_1 is not null or search_
   4 | media_markt  | mediamarkt.pl  | bp_produkt_media_markt  | bp_produkt_media_markt_history  |                 | 2017-01-04 19:17:05.779394 |          |         |         | bp_produkt_media_markt_konkurencja
   5 | morele       | morele.net     | bp_produkt_morele       | bp_produkt_morele_history       |                 | 2017-01-04 19:19:08.256647 |          |         |         | bp_produkt_morele_konkurencja
   6 | oleole       | oleole.pl      | bp_produkt_oleole       | bp_produkt_oleole_history       |                 | 2017-01-04 19:20:49.088682 |          |         |         | bp_produkt_oleole_konkurencja
+
+
+
+select traffic, domain, substring(time from 1 for 4) as year,substring(time from 5 for 2) as month  from tmp_saturn_zestawienie;
+select traffic, domain, substring(time from 1 for 4) as year,substring(time from 5 for 2) as month  from  tmp_media_markt_zestwienie;
+select traffic, domain, substring(time from 1 for 4) as year,substring(time from 5 for 2) as month  from tmp_media_expert_zestawienie;
+select traffic, domain, substring(time from 1 for 4) as year,substring(time from 5 for 2) as month  from tmp_euro_zestawienie;
+select traffic, domain, substring(time from 1 for 4) as year,substring(time from 5 for 2) as month  from tmp_oleole_zestawienie;

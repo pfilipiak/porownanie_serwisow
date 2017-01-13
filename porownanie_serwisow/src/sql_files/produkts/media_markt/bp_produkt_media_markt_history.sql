@@ -14,3 +14,6 @@ month int4
 );
 alter table bp_produkt_media_markt_history add column brand_fraze boolean;
 update bp_produkt_media_markt_history set brand_fraze = case when (keyword ~* 'media_markt' or keyword ~* 'media markt' ) then true else false end;
+
+
+alter table bp_produkt_media_markt_history add column real_trafic bigint;
