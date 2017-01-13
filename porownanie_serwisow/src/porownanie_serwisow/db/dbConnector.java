@@ -262,10 +262,27 @@ public class dbConnector {
         
         return true;
     }
-
-    
+   
     //end comp
    
+    //organic stat
+    public boolean getWebsiteTrendsReport(ArrayList responseList, String website, String query) throws SQLException{
+  
+        Boolean qres = false;
+        ArrayList resList = new ArrayList();
+
+        qres = getDBQueryResults(resList, query);   
+        
+        if (qres==true && resList.size()>0) {
+            for (int i=0; i<resList.size();i++) {
+                responseList.add(resList.get(i));
+                //System.err.println("dodano "+resList.get(i));
+                }
+            } else return false;
+        
+        return true;
+    }
+    //end organic
     
     
 }
