@@ -248,3 +248,17 @@ sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(
 union
 Select (select name from d_bp_produkt where id = 6) as name, 
 sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_oleole group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_oleole)) as x;
+
+
+-------- przykładowe zapytanie dla porównania keywordów dla produktów 1 i 2 
+select * from bp_compar_1_2_3_4_5_6 where search_volume_1 is not null or search_volume_2 is not null;
+
+---- tabela d_bp_produkt;
+ id |     name     | recognize_text |      source_table       |        source_table_hist        | import_function |          data_ins          | user_ins | data_up | user_up |          konkurencja_table          
+----+--------------+----------------+-------------------------+---------------------------------+-----------------+----------------------------+----------+---------+---------+-------------------------------------
+  1 | saturn       | saturn.pl      | bp_produkt_saturn       | bp_produkt_saturn_history       |                 | 2017-01-04 18:32:36.138572 |          |         |         | bp_produkt_saturn_konkurencja
+  2 | euro         | euro.com.pl    | bp_produkt_euro         | bp_produkt_euro_history         |                 | 2017-01-04 19:06:35.063174 |          |         |         | bp_produkt_euro_history
+  3 | media_expert | mediaexpert.pl | bp_produkt_media_expert | bp_produkt_media_expert_history |                 | 2017-01-04 19:13:49.379858 |          |         |         | bp_produkt_media_expert_konkurencja
+  4 | media_markt  | mediamarkt.pl  | bp_produkt_media_markt  | bp_produkt_media_markt_history  |                 | 2017-01-04 19:17:05.779394 |          |         |         | bp_produkt_media_markt_konkurencja
+  5 | morele       | morele.net     | bp_produkt_morele       | bp_produkt_morele_history       |                 | 2017-01-04 19:19:08.256647 |          |         |         | bp_produkt_morele_konkurencja
+  6 | oleole       | oleole.pl      | bp_produkt_oleole       | bp_produkt_oleole_history       |                 | 2017-01-04 19:20:49.088682 |          |         |         | bp_produkt_oleole_konkurencja
