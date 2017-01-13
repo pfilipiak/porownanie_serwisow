@@ -185,3 +185,66 @@ sum(month_1_roznica) as "m-12", sum(month_2_roznica) as "m-11", sum(month_3_rozn
 union
 Select (select name from d_bp_produkt where id = 6) as name, 
 sum(month_1_roznica) as "m-12", sum(month_2_roznica) as "m-11", sum(month_3_roznica) as "m-10", sum(month_4_roznica) as "m-9", sum(month_5_roznica) as "m-8", sum(month_6_roznica) as "m-7", sum(month_7_roznica) as "m-6", sum(month_8_roznica) as "m-5", sum(month_9_roznica) as "m-4", sum(month_10_roznica) as "m-3", sum(month_11_roznica) as "m-2", sum(month_12_roznica) as "m-1" from bp_produkt_oleole;
+
+ ---------- 10% roznica
+
+Select (select name from d_bp_produkt where id = 1) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_saturn group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_saturn)) as x
+union
+Select (select name from d_bp_produkt where id = 2) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_euro group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_euro)) as x
+union
+Select (select name from d_bp_produkt where id = 3) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_media_expert group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_expert)) as x
+union
+Select (select name from d_bp_produkt where id = 4) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_media_markt group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_markt)) as x
+union
+Select (select name from d_bp_produkt where id = 5) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_morele group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_morele)) as x
+union
+Select (select name from d_bp_produkt where id = 6) as name, 
+sum(x.month_1_roznica) as "m-12", sum(x.month_2_roznica) as "m-11", sum(x.month_3_roznica) as "m-10", sum(x.month_4_roznica) as "m-9", sum(x.month_5_roznica) as "m-8", sum(x.month_6_roznica) as "m-7", sum(x.month_7_roznica) as "m-6", sum(x.month_8_roznica) as "m-5", sum(x.month_9_roznica) as "m-4", sum(x.month_10_roznica) as "m-3", sum(x.month_11_roznica) as "m-2", sum(x.month_12_roznica) as "m-1" from (select * from bp_produkt_oleole group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_oleole)) as x;
+
+--- 10% max ctr
+
+
+Select (select name from d_bp_produkt where id = 1) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_saturn group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_saturn)) as x
+union
+Select (select name from d_bp_produkt where id = 2) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_euro group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_euro)) as x
+union
+Select (select name from d_bp_produkt where id = 3) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_media_expert group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_expert)) as x
+union
+Select (select name from d_bp_produkt where id = 4) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_media_markt group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_markt)) as x
+union
+Select (select name from d_bp_produkt where id = 5) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_morele group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_morele)) as x
+union
+Select (select name from d_bp_produkt where id = 6) as name, 
+sum(x.month_1_max_ctr) as "m-12", sum(x.month_2_max_ctr) as "m-11", sum(x.month_3_max_ctr) as "m-10", sum(x.month_4_max_ctr) as "m-9", sum(x.month_5_max_ctr) as "m-8", sum(x.month_6_max_ctr) as "m-7", sum(x.month_7_max_ctr) as "m-6", sum(x.month_8_max_ctr) as "m-5", sum(x.month_9_max_ctr) as "m-4", sum(x.month_10_max_ctr) as "m-3", sum(x.month_11_max_ctr) as "m-2", sum(x.month_12_max_ctr) as "m-1" from (select * from bp_produkt_oleole group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_oleole)) as x;
+
+
+--- 10% current
+
+
+Select (select name from d_bp_produkt where id = 1) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_saturn group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_saturn)) as x
+union
+Select (select name from d_bp_produkt where id = 2) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_euro group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_euro)) as x
+union
+Select (select name from d_bp_produkt where id = 3) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_media_expert group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_expert)) as x
+union
+Select (select name from d_bp_produkt where id = 4) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_media_markt group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_media_markt)) as x
+union
+Select (select name from d_bp_produkt where id = 5) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_morele group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_morele)) as x
+union
+Select (select name from d_bp_produkt where id = 6) as name, 
+sum(x.month_1_current_ctr) as "m-12", sum(x.month_2_current_ctr) as "m-11", sum(x.month_3_current_ctr) as "m-10", sum(x.month_4_current_ctr) as "m-9", sum(x.month_5_current_ctr) as "m-8", sum(x.month_6_current_ctr) as "m-7", sum(x.month_7_current_ctr) as "m-6", sum(x.month_8_current_ctr) as "m-5", sum(x.month_9_current_ctr) as "m-4", sum(x.month_10_current_ctr) as "m-3", sum(x.month_11_current_ctr) as "m-2", sum(x.month_12_current_ctr) as "m-1" from (select * from bp_produkt_oleole group by id, search_volume order by search_volume desc limit (select count(*)/10::bigint from bp_produkt_oleole)) as x;
