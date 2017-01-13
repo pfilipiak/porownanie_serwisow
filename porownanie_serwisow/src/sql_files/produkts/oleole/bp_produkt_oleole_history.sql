@@ -12,3 +12,7 @@ timestamp timestamp,
 year int4,
 month int4
 );
+
+alter table bp_produkt_oleole_history add column brand_fraze boolean;
+update bp_produkt_oleole_history set brand_fraze = case when (keyword ~* 'oleole' or keyword ~* 'ole ole' ) then true else false end;
+

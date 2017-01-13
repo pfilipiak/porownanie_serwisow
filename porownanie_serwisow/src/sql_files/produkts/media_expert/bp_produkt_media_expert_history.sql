@@ -12,3 +12,6 @@ timestamp timestamp,
 year int4,
 month int4
 );
+
+alter table bp_produkt_media_expert_history add column brand_fraze boolean;
+update bp_produkt_media_expert_history set brand_fraze = case when (keyword ~* 'media_expert' or keyword ~* 'media expert' or keyword ~* 'media_ekspert' or keyword ~* 'media ekspert' ) then true else false end;
