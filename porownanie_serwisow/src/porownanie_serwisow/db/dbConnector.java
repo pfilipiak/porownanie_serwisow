@@ -155,8 +155,8 @@ public class dbConnector {
         try {
            connection = DriverManager.getConnection(dbsource, dbname, dbpass);
            Statement stmt = connection.createStatement();
-           System.out.println("polaczono sie");
-           System.out.println(query);
+           //System.out.println("polaczono sie");
+           //System.out.println(query);
            
            ResultSet rs = stmt.executeQuery(query);
            ResultSetMetaData rsMD = rs.getMetaData();
@@ -168,7 +168,7 @@ public class dbConnector {
                   for (int i = 1; i <= columnsNumber; i++) {                  
                     //String apiAttr = DBtoAPIDictionary.get(rsMD.getColumnName(i));
                     columnValue += rs.getString(i) + "\t";
-                    System.out.println(rs.getString(i));
+                    //System.out.println(rs.getString(i));
                  }
                   if (!columnValue.trim().isEmpty())
                         responseStr.add(columnValue.trim());
@@ -192,7 +192,7 @@ public class dbConnector {
     
     //wyciagnij konkurentow
     
-    public boolean getWebsiteCompetitorsReport(ArrayList responseList, String website, String subQuery) throws SQLException{
+    public boolean getWebsiteCompetitorsReport(ArrayList responseList, String website, String subQuery, String whereQuery) throws SQLException{
   
        Boolean qres = false;
         String sqltable = "d_bp_produkt";
@@ -225,14 +225,14 @@ public class dbConnector {
                    sqltable = templist.get(0);
                    templist.clear();
                    //qres = getDBQueryResults(templist, "select year, month, count(*) from "+sqltable+" group by year, month");
-                   qres = getDBQueryResults(templist, "select year, month, "+subQuery+" from "+sqltable+" group by year, month");
+                   qres = getDBQueryResults(templist, "select year, month, "+subQuery+" from "+sqltable+" "+whereQuery+" group by year, month");
                    //qres = getDBQueryResults(templist, "select year, month, count(*) from "+sqltable+"_history group by year, month order by month desc limit 11");
-                   qres = getDBQueryResults(templist, "select year, month, "+subQuery+" from "+sqltable+"_history group by year, month order by month desc limit 11");
+                   qres = getDBQueryResults(templist, "select year, month, "+subQuery+" from "+sqltable+"_history"+" "+whereQuery+" group by year, month order by month desc limit 11");
                    
                    for (int x=0; x<templist.size(); x++) {
                        String month = templist.get(x).split("\t")[1];
                        if (month.length()==1) month = "0" + month;
-                       month = templist.get(x).split("\t")[0]+"-"+month; //rok + mth
+                       month = "'"+ templist.get(x).split("\t")[0]+"-"+month + "'"; //'rok + mth'
                        String res = templist.get(x).split("\t")[2];
                        String tryMonth = monthRes.get(month);
                        if (tryMonth != null) {
